@@ -1,0 +1,24 @@
+<!-- Contenedor del video -->
+<div class="mx-10 rounded-xl overflow-hidden relative">
+	<div id="player"
+		class="min-w-full w-auto h-auto aspect-video"></div>
+
+</div>
+
+<!-- Controles de video simulados -->
+<div id="controles-video"
+	class="text-4xl flex gap-6 w-full justify-center my-6 items-center">
+	<button (click)="togglePlay()"
+		id="play-button"
+		class="w-10 h-fit">
+		<i [class]="videoPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
+	</button>
+	<!-- barra de progreso -->
+	<div id="progress-bar-bg"
+		class="w-1/2 h-2 bg-gray-300 rounded-full flex items-center">
+		<div id="progress-bar-fg"
+			class="h-full bg-secondary rounded-full"></div>
+	</div>
+</div>
+
+<h2 class="text-4xl font-semibold flex px-10 justify-center items-center text-center line-clamp-2">{{videoTitle}}</h2>

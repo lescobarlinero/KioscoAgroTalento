@@ -1,0 +1,15 @@
+<app-video-player [videoId]="currentVideoId"></app-video-player>
+<!-- botones y puntos correspondientes a cantidad de videos en carrusel -->
+ <div class="mt-8 text-4xl h-fit flex justify-center items-center gap-2">
+    <button [class]="videoPlayingIndex == 0? 'text-gray-600' : 'text-secondary'" (click) = "previousVideo()">
+        <i class="fa-solid fa-circle-chevron-left"></i>
+    </button>
+    <!-- tantos botones como videos -->
+    <button [id]="video" *ngFor="let video of urlsVideos" [class]="video == urlsVideos[videoPlayingIndex] ? 'text-secondary': 'text-gray-400'" >
+        <i class="fa-solid fa-circle text-2xl"></i>
+    </button>
+    <!-- button will be faded and disabled when the video is the last one -->
+    <button [class]="videoPlayingIndex == amountVideos - 1 ? 'text-gray-600' : 'text-secondary'" (click) = "nextVideo()">
+        <i class="fa-solid fa-circle-chevron-right"></i>
+    </button>
+ </div>
