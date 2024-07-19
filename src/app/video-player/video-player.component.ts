@@ -11,11 +11,11 @@ export class VideoPlayerComponent implements OnInit {
   @Input() videoId!: string;
 
   ngOnChanges(changes: any) {
-    if (changes.videoId) {
+    if (changes.videoId && this.player) {
+      this.player.destroy();
       console.log('videoId changed: ', changes.videoId.currentValue);
       this.video = changes.videoId.currentValue;
       this.startVideo();
-      this.init();
     }
   }
 
@@ -117,8 +117,12 @@ export class VideoPlayerComponent implements OnInit {
   updateProgressBar() {
     // Update the value of our progress bar
     var progressBar = document.getElementById('progress-bar-fg');
-    if (progressBar) {
-      progressBar.style.width = (this.player.getCurrentTime() / this.player.getDuration() * 100) + '%';
+    try {
+      if (progressBar) {
+        progressBar.style.width = (this.player.getCurrentTime() / this.player.getDuration() * 100) + '%';
+      }
+    } catch (error) {
+      return;
     }
   }
 

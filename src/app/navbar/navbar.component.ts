@@ -8,12 +8,25 @@ import { Component } from '@angular/core';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  currentTime: string = '';
+  currentDate: string = '';
+  greeting: string = '';
+
+  ngOnInit() {
+    this.updateDateAndTime();
+    setInterval(() => {
+      this.updateDateAndTime();
+    }, 100);
+  }
+
+  updateDateAndTime() {
   // get current time as 1:00 pm
-  currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
+    this.currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
 
-  // get current date as 16 Jun, 2024
-  currentDate = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+    // get current date as 16 Jun, 2024
+    this.currentDate = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
 
-  // change text to ¡Buenos días! if it's before 12:00 pm, ¡Buenas tardes! if it's before 6:00 pm, and ¡Buenas noches! if it's after 6:00 pm
-  greeting = this.currentTime.includes('AM') ? '¡Buenos días!' : this.currentTime.includes('PM') && parseInt(this.currentTime) < 6 ? '¡Buenas tardes!' : '¡Buenas noches!';
+    // change text to ¡Buenos días! if it's before 12:00 pm, ¡Buenas tardes! if it's before 6:00 pm, and ¡Buenas noches! if it's after 6:00 pm
+    this.greeting = this.currentTime.includes('AM') ? '¡Buenos días!' : this.currentTime.includes('PM') && parseInt(this.currentTime) < 6 ? '¡Buenas tardes!' : '¡Buenas noches!';
+  }
 }
