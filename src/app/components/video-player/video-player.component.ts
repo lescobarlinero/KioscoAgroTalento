@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit, AfterViewInit, Input, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, AfterViewInit, Input, SimpleChange, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { ObservableInput } from 'rxjs';
 
 @Component({
@@ -10,10 +10,11 @@ import { ObservableInput } from 'rxjs';
 export class VideoPlayerComponent implements OnInit {
   @Input() videoId!: string;
 
+  @Output() videoEnded = new EventEmitter();
+
   ngOnChanges(changes: any) {
     if (changes.videoId && this.player) {
       this.player.destroy();
-      console.log('videoId changed: ', changes.videoId.currentValue);
       this.video = changes.videoId.currentValue;
       this.startVideo();
     }
@@ -53,7 +54,7 @@ export class VideoPlayerComponent implements OnInit {
     this.player = new (window as any)['YT'].Player('player', {
       videoId: this.video,
       playerVars: {
-        autoplay: 0,
+        autoplay: 1,
         modestbranding: 1,
         controls: 0,
         disablekb: 1,
@@ -72,13 +73,14 @@ export class VideoPlayerComponent implements OnInit {
 
   /* 4. It will be called when the Video Player is ready */
   onPlayerReady(event: any) {
-    console.log('player ready');
     this.videoTitle = event.target.getVideoData().title;
+    console.log('player ready', this.videoTitle);
+    this.player.playVideo();
+    this.videoPlaying = true;
   }
 
   /* 5. API will call this function when Player State changes like PLAYING, PAUSED, ENDED */
   onPlayerStateChange(event: any) {
-    console.log(event)
     switch (event.data) {
       case (window as any)['YT'].PlayerState.PLAYING:
         if (this.cleanTime() == 0) {
@@ -86,14 +88,17 @@ export class VideoPlayerComponent implements OnInit {
         } else {
           console.log('playing ' + this.cleanTime())
         };
+        this.videoPlaying = true;
         break;
       case (window as any)['YT'].PlayerState.PAUSED:
         if (this.player.getDuration() - this.player.getCurrentTime() != 0) {
           console.log('paused' + ' @ ' + this.cleanTime());
         };
+        this.videoPlaying = false;
         break;
       case (window as any)['YT'].PlayerState.ENDED:
         console.log('ended ');
+        this.videoEnded.emit();
         break;
     }
   }

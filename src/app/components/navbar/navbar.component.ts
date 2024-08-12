@@ -12,6 +12,7 @@ export class NavbarComponent {
   currentDate: string = '';
   greeting: string = '';
 
+
   ngOnInit() {
     this.updateDateAndTime();
     setInterval(() => {

@@ -1,0 +1,37 @@
+<app-video-player [videoId]="currentVideoId" (videoEnded)="nextVideo()"
+	class="flex justify-center items-center flex-col mx-8"></app-video-player>
+<!-- botones y puntos correspondientes a cantidad de videos en carrusel -->
+<div class="mt-14 text-4xl h-fit flex justify-center items-center gap-4">
+	<button
+		(click)="prevVideo()"
+		class="mr-10 text-secondary">
+		<i class="fa-solid fa-circle-chevron-left"></i>
+	</button>
+	<!-- tantos botones como videos -->
+	<button *ngFor="let video of videos | async; let i = index"
+		[id]="video"
+		[ngClass]="{
+        'text-secondary': video == (currentVideo | async),
+        'text-gray-400': video != (currentVideo | async),
+        'flex text-2xl': true
+      }">
+		
+		<i class="fa-solid fa-circle"></i>
+	</button>
+	<button
+		(click)="nextVideo()"
+		class="ml-10 text-secondary">
+		<i class="fa-solid fa-circle-chevron-right"></i>
+	</button>
+</div>
+<div class="w-full flex flex-col justify-center items-center mt-8 mb-14">
+    <h2 class="text-2xl font-semibold mt-14 mb-5">Más material sobre AgroTalento</h2>
+    <div class=" w-fit max-w-3xl flex flex-wrap justify-center items-center gap-4">
+        <div *ngFor="let video of videos | async; let i = index" (click)="changeVideoTo(i)"
+        class=" text-white size-40 bg-secondary rounded-xl flex justify-center items-center flex-col p-2 gap-3 cursor-pointer">
+            <i class="text-5xl" [class]="video.icon + (video.icon === 'fa-youtube' ? ' fa-brands':' fa-solid')"></i>
+            <p class="text-center text-sm line-clamp-2">{{video.title}}</p>
+            <p class="px-2 bg-white rounded-full uppercase text-xs text-secondary">Video Tutorial</p>
+        </div>
+    </div>
+</div>

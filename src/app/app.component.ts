@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from './navbar/navbar.component';
-import { CarruselVideosComponent } from './carrusel-videos/carrusel-videos.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { CarruselVideosComponent } from './components/carrusel-videos/carrusel-videos.component';
 
 @Component({
   selector: 'app-root',
