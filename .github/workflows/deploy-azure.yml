@@ -28,5 +28,5 @@ jobs:
         with:
           app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ./dist/kiosco-agro-talento  # Ruta al directorio de la build
+          package: .  # Ruta al directorio de la build
 
