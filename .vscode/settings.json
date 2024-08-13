@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/a6f3530c-2552-4f46-8edd-aed2c035eba8/resourceGroups/WAppGroup/providers/Microsoft.Web/sites/totem-ag",
+    "appService.deploySubpath": "dist"
+}

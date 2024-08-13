@@ -1,0 +1,32 @@
+name: Deploy Angular to Azure Web App
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest  # El entorno de GitHub Actions para la construcción
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  # Cambia la versión de Node.js según tu proyecto
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build --if-present
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./dist  # Ruta al directorio de la build
+
