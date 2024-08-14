@@ -60,5 +60,23 @@ export class VideoService {
     });
   }
 
+  moveVideo(index: number, direction: number) {
+    return this.videos.pipe(
+      take(1),
+      switchMap(currentVideos => {
+        const updatedVideos = [...currentVideos];
+        const movingVideo = updatedVideos[index];
+        const targetIndex = index + direction;
+        if (targetIndex >= 0 && targetIndex < updatedVideos.length) {
+          updatedVideos[index] = updatedVideos[targetIndex];
+          updatedVideos[targetIndex] = movingVideo;
+        }
+        return this.http.post<Video[]>(this.apiUrl, updatedVideos).pipe(
+          tap(() => this.videosSubject.next(updatedVideos))
+        );
+      })
+    );
+  }
+
 
 }

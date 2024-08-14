@@ -36,4 +36,8 @@ export class GestionVideosComponent {
     const id = url.split('v=')[1];
     return `https://img.youtube.com/vi/${id}/0.jpg`;
   }
+
+  goToSortVideos() {
+    window.location.href = '/ordenar-videos';
+  }
 }
