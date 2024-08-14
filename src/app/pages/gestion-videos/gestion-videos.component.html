@@ -9,6 +9,9 @@
       <button (click)="goToAddVideo()" class="bg-secondary hover:bg-secondary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
         <i class="fa-solid fa-plus mr-2"></i> Agregar Video
       </button>
+      <button (click)="goToSortVideos()" class="ml-2 bg-primary hover:bg-primary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+        <i class="fa-solid fa-sort"></i> Ordenar Videos
+      </button>
     </div>
     <div class="flex flex-wrap -m-4">
         <div *ngFor="let video of videos | async; let i = index" class="xl:w-1/4 md:w-1/2 p-4 flex">

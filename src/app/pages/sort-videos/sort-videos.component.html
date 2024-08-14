@@ -1,0 +1,48 @@
+<section class="text-gray-600 body-font">
+	<div class="container px-5 py-24 mx-auto">
+		<div class="flex flex-wrap mb-20">
+			<div class="mr-6 mb-6 lg:mb-0">
+				<h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
+					Organizar orden de videos
+				</h1>
+				<div class="h-1 w-20 bg-secondary rounded"></div>
+			</div>
+			<button (click)="goToVideos()"
+				class="bg-secondary hover:bg-secondary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+				<i class="fa-solid fa-rotate-left mr-2"></i>
+				Volver a todos los videos
+			</button>
+
+		</div>
+		<div class="flex flex-wrap -m-4">
+			<div *ngFor="let video of videos | async; let i = index"
+				class="w-full p-4 flex">
+				<div class="bg-gray-100 p-6 rounded-lg flex min-h-full min-w-full items-center">
+					<img [src]="getVideoThumbnail(video.url)"
+						class="h-28 rounded w-auto aspect-video object-cover object-center mr-4"
+						alt="content">
+					<div class="flex flex-col w-full h-full">
+						<h3 class="tracking-widest text-secondary text-xs font-medium title-font">VIDEO</h3>
+						<h2 class="text-lg text-gray-900 font-medium title-font mb-4 line-clamp-3">{{video.title}}</h2>
+						<div class="mt-auto">
+							<button (click)="deleteVideo(i)"
+								class="bg-red-400 hover:bg-red-400/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+								<i class="fa-solid fa-trash mr-2"></i>
+								Eliminar Video
+							</button>
+						</div>
+            
+					</div>
+          <div class="flex flex-col h-full gap-2">
+            <button [disabled]="i==0" (click)="goUp(i)" class="disabled:bg-gray-400 disabled:cursor-not-allowed w-auto h-1/2 aspect-square bg-secondary hover:bg-secondary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+              <i class="fa-solid fa-sort-up"></i>
+            </button>
+            <button [disabled]="i==videosAmount-1" (click)="goDown(i)" class="disabled:bg-gray-400 disabled:cursor-not-allowed w-auto h-1/2 aspect-square bg-secondary hover:bg-secondary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+              <i class="fa-solid fa-sort-down"></i>
+            </button>
+          </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
