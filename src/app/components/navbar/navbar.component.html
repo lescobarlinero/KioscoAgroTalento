@@ -2,7 +2,7 @@
 <nav class="w-full max-w-full h-[105px] bg-primary font-sans flex items-center justify-between fixed top-0 left-0 z-50 px-6">
     <img src="Logo AgroTalento.gif" alt="Logo Agrotalento" class="max-h-16 h-auto w-auto rounded-lg"/> 
     <div class="bg-red flex flex-col font-semibold text-white items-end">
-      <p class="text-4xl uppercase">{{currentTime}}</p>
+      <p class="text-4xl uppercase" (click)="refreshPage()">{{currentTime}}</p>
       <p class="text-base capitalize">{{currentDate}}</p>
     </div>
 </nav>
