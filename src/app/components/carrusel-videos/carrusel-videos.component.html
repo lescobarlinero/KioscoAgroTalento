@@ -30,7 +30,7 @@
     <div class=" w-fit max-w-3xl flex flex-wrap justify-center items-center gap-4">
 		
         <div *ngFor="let video of videos | async; let i = index" (click)="changeVideoTo(i)"
-        class=" text-white size-56 bg-secondary rounded-xl flex justify-center items-center flex-col p-2 gap-3 cursor-pointer">
+        class=" text-white size-56 bg-secondary rounded-xl  justify-center items-center flex-col p-2 gap-3 cursor-pointer" [ngClass]="shownVideos.includes(i) ? 'flex':'hidden'">
 		<div class="gap-2 flex px-4 py-2 rounded-full text-white bg-red-400 items-center justify-center text-base -mt-10" *ngIf="video == (currentVideo | async)">Reproduciendo <i class="fa-solid fa-play fa-beat"></i></div>
             <i class="text-5xl" [class]="video.icon + (video.icon === 'fa-youtube' ? ' fa-brands':' fa-solid')"></i>
             <p class="text-center text-xl line-clamp-2">{{video.title}}</p>
