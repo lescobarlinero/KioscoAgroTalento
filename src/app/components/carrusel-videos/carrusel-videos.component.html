@@ -26,10 +26,12 @@
 	</button>
 </div>
 <div class="w-full flex flex-col justify-center items-center mt-8 mb-14">
-    <h2 class="text-2xl font-semibold mt-14 mb-5">Descubre AgroTalento</h2>
+    <h2 class="text-2xl font-semibold mt-14 mb-20">Descubre AgroTalento</h2>
     <div class=" w-fit max-w-3xl flex flex-wrap justify-center items-center gap-4">
+		
         <div *ngFor="let video of videos | async; let i = index" (click)="changeVideoTo(i)"
         class=" text-white size-56 bg-secondary rounded-xl flex justify-center items-center flex-col p-2 gap-3 cursor-pointer">
+		<div class="gap-2 flex px-4 py-2 rounded-full text-white bg-red-400 items-center justify-center text-base -mt-10" *ngIf="video == (currentVideo | async)">Reproduciendo <i class="fa-solid fa-play fa-beat"></i></div>
             <i class="text-5xl" [class]="video.icon + (video.icon === 'fa-youtube' ? ' fa-brands':' fa-solid')"></i>
             <p class="text-center text-xl line-clamp-2">{{video.title}}</p>
             <p class="px-4 py-2 bg-white rounded-full uppercase text-lg text-secondary">Video Tutorial</p>
