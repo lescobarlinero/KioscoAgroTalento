@@ -8,6 +8,7 @@ import { ObservableInput } from 'rxjs';
   styleUrls: ['./video-player.component.css']
 })
 export class VideoPlayerComponent implements OnInit {
+
   @Input() videoId!: string;
 
   @Output() videoEnded = new EventEmitter();
@@ -55,13 +56,13 @@ export class VideoPlayerComponent implements OnInit {
       videoId: this.video,
       playerVars: {
         autoplay: 1,
-        modestbranding: 1,
+        modestbranding: 0,
         controls: 0,
         disablekb: 1,
         rel: 0,
         showinfo: 0,
         fs: 0,
-        playsinline: 1
+        playsinline: 1,
       },
       events: {
         'onStateChange': this.onPlayerStateChange.bind(this),
