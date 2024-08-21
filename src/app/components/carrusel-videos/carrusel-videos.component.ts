@@ -109,6 +109,16 @@ export class CarruselVideosComponent {
   }
 
   changeVideoTo(index: number) {
+      // Calculate the page based on the index and update shownVideos
+    const pageSize = 3; // in case this changes :)
+    const currentPage = Math.floor(index / pageSize);
+
+    // Calculate the start and end indices for the shownVideos array
+    const start = currentPage * pageSize;
+    const end = Math.min(start + pageSize, this.amountVideos);
+
+    // Update shownVideos to reflect the correct videos for the current page
+    this.shownVideos = Array.from({ length: end - start }, (_, i) => start + i);
     this.videoPlayingIndex = index;
     this.updateCurrentVideo();
   }
