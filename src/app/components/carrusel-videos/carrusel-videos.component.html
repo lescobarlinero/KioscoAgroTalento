@@ -1,40 +1,55 @@
-<app-video-player [videoId]="currentVideoId" (videoEnded)="nextVideo()"
+<app-video-player [videoId]="currentVideoId"
+	(videoEnded)="nextVideo()"
 	class="flex justify-center items-center flex-col mx-8"></app-video-player>
 <!-- botones y puntos correspondientes a cantidad de videos en carrusel -->
 <div class="mt-14 text-6xl h-fit flex justify-center items-center gap-4">
-	<button
-		(click)="prevVideo()"
+	<button (click)="prevVideo()"
 		class="mr-10 text-secondary">
 		<i class="fa-solid fa-circle-chevron-left"></i>
 	</button>
 	<!-- tantos botones como videos -->
 	<button *ngFor="let video of videos | async; let i = index"
 		[id]="video"
-		(click)="changeVideoTo(i)"
 		[ngClass]="{
         'text-secondary': video == (currentVideo | async),
         'text-gray-400': video != (currentVideo | async),
         'flex text-4xl': true
-      }">
-		
+      }"
+		(click)="changeVideoTo(i)">
+
 		<i class="fa-solid fa-circle"></i>
 	</button>
-	<button
-		(click)="nextVideo()"
+	<button (click)="nextVideo()"
 		class="ml-10 text-secondary">
 		<i class="fa-solid fa-circle-chevron-right"></i>
 	</button>
 </div>
 <div class="w-full flex flex-col justify-center items-center mt-8 mb-14">
-    <h2 class="text-2xl font-semibold mt-14 mb-20">Descubre AgroTalento</h2>
-    <div class=" w-fit max-w-3xl flex flex-wrap justify-center items-center gap-4">
-		
-        <div *ngFor="let video of videos | async; let i = index" (click)="changeVideoTo(i)"
-        class=" text-white size-56 bg-secondary rounded-xl  justify-center items-center flex-col p-2 gap-3 cursor-pointer" [ngClass]="shownVideos.includes(i) ? 'flex':'hidden'">
-		<div class="gap-2 flex px-4 py-2 rounded-full text-white bg-red-400 items-center justify-center text-base -mt-10" *ngIf="video == (currentVideo | async)">Reproduciendo <i class="fa-solid fa-play fa-beat"></i></div>
-            <i class="text-5xl" [class]="video.icon + (video.icon === 'fa-youtube' ? ' fa-brands':' fa-solid')"></i>
-            <p class="text-center text-xl line-clamp-2">{{video.title}}</p>
-            <p class="px-4 py-2 bg-white rounded-full uppercase text-lg text-secondary">Video Tutorial</p>
-        </div>
-    </div>
+	<h2 class="text-2xl font-semibold mt-14 mb-20">
+		Descubre AgroTalento
+	</h2>
+	<div class="w-fit max-w-4xl flex flex-wrap justify-center items-center gap-4">
+		<i *ngIf="amountVideos > 3"
+			(click)="prevPage()"
+			class="text-8xl fa-solid fa-caret-left text-secondary"></i>
+
+		<div *ngFor="let video of videos | async; let i = index"
+			[ngClass]="shownVideos.includes(i) ? 'flex':'hidden'"
+			(click)="changeVideoTo(i)"
+			class=" text-white size-56 bg-secondary rounded-xl  justify-center items-center flex-col p-2 gap-3 cursor-pointer">
+			<div *ngIf="video == (currentVideo | async)"
+				class="gap-2 flex px-4 py-2 rounded-full text-white bg-red-400 items-center justify-center text-base -mt-10">
+				Reproduciendo
+				<i class="fa-solid fa-play fa-beat"></i>
+			</div>
+			<i [class]="video.icon + (video.icon === 'fa-youtube' ? ' fa-brands':' fa-solid')"
+				class="text-5xl"></i>
+			<p class="text-center text-xl line-clamp-2">{{video.title}}</p>
+			<p class="px-4 py-2 bg-white rounded-full uppercase text-lg text-secondary">Video Tutorial</p>
+		</div>
+		<i *ngIf="amountVideos > 3"
+			(click)="nextPage()"
+			class="text-8xl fa-solid fa-caret-right text-secondary"></i>
+	</div>
+
 </div>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { VideoPlayerComponent } from '../video-player/video-player.component';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import { VideoService } from '../../services/video.service';
 import { map, Observable, range } from 'rxjs';
 import { Video } from '../../types/video';
@@ -20,24 +20,21 @@ export class CarruselVideosComponent {
     map(videos => videos[this.videoPlayingIndex])
   );
   shownVideos: number[] = [];
+  currentPage = 0;
+  pageSize = 3;
 
   currentVideoId = '';
 
-  constructor(private videoService: VideoService) {}
+  constructor(private videoService: VideoService) { }
 
   ngOnInit() {
-    this.updateCurrentVideo();
-
-    // los primeros 3 videos se muestran en los botones de abajo
     this.videos.subscribe(videos => {
-      this.amountVideos = videos.length;   
-      
-      this.shownVideos = Array.from({ length: Math.min(3, this.amountVideos) }, (_, i) => i); 
-      
-      console.log('shownVideos', this.shownVideos);  
+      this.amountVideos = videos.length;
+
+      this.updateShownVideos(); //
     });
 
-
+    this.updateCurrentVideo();
   }
 
   private updateCurrentVideo() {
@@ -54,55 +51,53 @@ export class CarruselVideosComponent {
 
   nextVideo() {
     if (this.videoPlayingIndex < this.amountVideos - 1) {
-      // if next video's index is not inside the shownVideos array, we need to update it to the next 3 indexes
-      if (!this.shownVideos.includes(this.videoPlayingIndex + 1)) {
-        this.shownVideos = Array.from(
-          { length: Math.min(3, this.amountVideos - this.videoPlayingIndex - 1) },
-          (_, i) => this.videoPlayingIndex + i + 1
-        );
-      }
       this.videoPlayingIndex++;
+
+      // Check if the next video is on a new page, update shownVideos if necessary
+      const pageIndex = Math.floor(this.videoPlayingIndex / this.pageSize);
+      if (pageIndex !== this.currentPage) {
+        this.currentPage = pageIndex;
+        this.updateShownVideos();
+      }
+
       this.updateCurrentVideo();
       console.log('shownVideos', this.shownVideos);
 
     } else {
-      // if current video is the last one, we need to go back to the first three videos
-      this.shownVideos = Array.from({ length: Math.min(3, this.amountVideos) }, (_, i) => i);
+      // Wrap-around to the first page
+      this.currentPage = 0;
       this.videoPlayingIndex = 0;
+      this.updateShownVideos();
       this.updateCurrentVideo();
       console.log('shownVideos', this.shownVideos);
-
     }
   }
 
   prevVideo() {
     if (this.videoPlayingIndex > 0) {
       this.videoPlayingIndex--;
-  
-      // If the previous video's index is not inside the shownVideos array, update shownVideos
-      if (!this.shownVideos.includes(this.videoPlayingIndex)) {
-        const start = Math.max(this.videoPlayingIndex - 2, 0); // Ensure start index is not negative
-        const end = this.videoPlayingIndex + 1; // End index for slice
-        this.shownVideos = Array.from({ length: end - start }, (_, i) => start + i);
+
+      // Check if the previous video is on a different page, update shownVideos if necessary
+      const pageIndex = Math.floor(this.videoPlayingIndex / this.pageSize);
+      if (pageIndex !== this.currentPage) {
+        this.currentPage = pageIndex;
+        this.updateShownVideos();
       }
-  
+
       this.updateCurrentVideo();
       console.log('shownVideos', this.shownVideos);
-      
+
     } else {
-      // Handle wrap-around to the last page of videos
-      const remainingVideos = this.amountVideos % 3 || 3; // Number of videos on the last page
-      this.shownVideos = Array.from(
-        { length: remainingVideos },
-        (_, i) => this.amountVideos - remainingVideos + i
-      );
-  
+      // Handle wrap-around to the last page
+      const lastPage = Math.floor((this.amountVideos - 1) / this.pageSize);
+      this.currentPage = lastPage;
       this.videoPlayingIndex = this.amountVideos - 1;
+      this.updateShownVideos();
       this.updateCurrentVideo();
       console.log('shownVideos', this.shownVideos);
     }
   }
-  
+
 
   getVideoId(url: string): string {
     return url.split('v=')[1];
@@ -110,6 +105,41 @@ export class CarruselVideosComponent {
 
   changeVideoTo(index: number) {
     this.videoPlayingIndex = index;
+    const pageIndex = Math.floor(index / this.pageSize);
+
+    if (pageIndex !== this.currentPage) {
+      this.currentPage = pageIndex;
+      this.updateShownVideos();
+    }
+
     this.updateCurrentVideo();
   }
+
+  updateShownVideos() {
+    const start = this.currentPage * this.pageSize;
+    const end = Math.min(start + this.pageSize, this.amountVideos);
+    this.shownVideos = Array.from({ length: end - start }, (_, i) => start + i);
+  }
+
+  nextPage() {
+    const totalPages = Math.ceil(this.amountVideos / this.pageSize);
+    if (this.currentPage < totalPages - 1) {
+      this.currentPage++;
+    } else {
+      this.currentPage = 0; // Regresa a la primera página
+    }
+    this.updateShownVideos();
+  }
+
+  prevPage() {
+    const totalPages = Math.ceil(this.amountVideos / this.pageSize);
+    if (this.currentPage > 0) {
+      this.currentPage--;
+    } else {
+      this.currentPage = totalPages - 1; // Va a la última página
+    }
+    this.updateShownVideos();
+  }
+
+
 }
