@@ -32,7 +32,7 @@ export class AddVideoComponent {
   }
 
   goToGestion() {
-    window.location.href = '/gestionar';
+    window.location.href = 'gestionar/videos';
   }
 
   agregarVideo() {
