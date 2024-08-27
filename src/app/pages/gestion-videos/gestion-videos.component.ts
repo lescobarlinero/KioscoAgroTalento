@@ -18,7 +18,7 @@ export class GestionVideosComponent {
   constructor(private videoService: VideoService) {}
 
   goToAddVideo() {
-    window.location.href = '/agregar-video';
+    window.location.href = 'gestionar/videos/agregar-video';
   }
 
   deleteVideo(index: number) {
@@ -38,6 +38,6 @@ export class GestionVideosComponent {
   }
 
   goToSortVideos() {
-    window.location.href = '/ordenar-videos';
+    window.location.href = 'gestionar/videos/ordenar-videos';
   }
 }

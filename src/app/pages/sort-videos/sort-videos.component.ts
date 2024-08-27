@@ -23,7 +23,7 @@ export class SortVideosComponent {
   }
 
   goToVideos() {
-    window.location.href = '/gestionar';
+    window.location.href = 'gestionar/videos';
   }
 
   deleteVideo(index: number) {
