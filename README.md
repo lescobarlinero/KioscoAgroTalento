@@ -1,6 +1,26 @@
-# KioscoAgroTalento 🌱☀️
+# KioscoAgroTalento 🌱☀️ 
+
 
 Powered by ⚡ [Angular CLI](https://github.com/angular/angular-cli) version 18.0.5. ⚡
+
+## Features 
+### Versión Actual
+![Versión](https://img.shields.io/badge/Versión-0.0-blue)
+- Piloto: Disponible **SOLO** para AgroTalento
+- Tema: Colores verde agro, azul savia y blanco para el fondo.
+- Gestión de videos en '/gestionar'
+- Organizar orden de videos
+- Todos los videos en el carrusel tienen referencia a los botones en la parte inferior.
+
+
+### Futura Versión:
+![Versión](https://img.shields.io/badge/Versión-1.0-g) 
+- Disponible para múltiples eventos
+- Temas customizables, por defecto: Colores verde agro, azul savia y blanco para el fondo.
+- Gestión general de contenidos en '/gestionar'
+- Gestion de temas, multimedia, tags para etiquetar contenido, etc.
+
+
 
 ## URLs importantes
 
