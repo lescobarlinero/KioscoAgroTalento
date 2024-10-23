@@ -8,7 +8,7 @@ import { Event } from '../../types/event';
 })
 export class EventService {
   
-  private apiUrl = 'http://localhost:3001/events'; // Replace with your backend API URL
+  private apiUrl = 'https://totem-ag-api-d5eqccdxebdaf3ek.eastus-01.azurewebsites.net/events'; // Replace with your backend API URL
 
   constructor(private http: HttpClient) { }
 
