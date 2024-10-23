@@ -1,0 +1,41 @@
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+      <div class="flex flex-wrap mb-20">
+        <div class="mr-6 mb-6 lg:mb-0">
+          <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
+            Gestión de Temas
+          </h1>
+          <div class="h-1 w-20 bg-secondary rounded"></div>
+        </div>
+        <button (click)="goToNewTheme()" class="ml-2 bg-primary hover:bg-primary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+          <i class="fa-solid fa-plus"></i> Crear Tema
+        </button>
+        <button (click)="goToManagement()" class="ml-2 bg-secondary hover:bg-secondary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+          <i class="fa-solid fa-people-pulling"></i> Volver a Gestión
+        </button>
+      </div>
+      <div class="flex w-full flex-wrap -m-4">
+        <div *ngFor="let theme of themes" 
+        class="p-4 md:w-1/3">
+          <div class="h-full border-2 border-gray-200 bg-white border-opacity-60 rounded-lg overflow-hidden">
+            <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="{{theme.banner}}" alt="blog">
+            <div class="p-6">
+              <h1 class="title-font text-lg font-medium text-gray-900 mb-3">{{theme.name === 'DEFAULT' ? "Tema Por Defecto": theme.name}}</h1>
+              <div class="flex items-center flex-wrap ">
+                <button (click)="goToTheme(theme.id ?? 1)"
+                class="bg-secondary hover:bg-secondary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white inline-flex items-center md:mb-2 lg:mb-0">
+                  Editar Tema
+                </button>
+                <div class="flex ml-auto">
+                  <button class="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none" [ngStyle]="{'background-color': theme.primaryColor}"></button>
+                  <button class="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none" [ngStyle]="{'background-color': theme.secondaryColor}"></button>
+                  <button class="border-2 border-gray-300 ml-1 bg-indigo-500 rounded-full w-6 h-6 focus:outline-none" [ngStyle]="{'background-color': theme.tertiaryColor}"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

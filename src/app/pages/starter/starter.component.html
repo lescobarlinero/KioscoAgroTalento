@@ -1,0 +1,26 @@
+<main class="relative w-screen h-screen flex flex-col justify-center items-center">
+  <img src="https://kioscostorage.blob.core.windows.net/images/starter.avif" alt="Fondo Starter" class="w-full h-full inset-0 fixed object-cover blur-md -z-10">
+  <div class="absolute inset-0 bg-gradient-to-b from-primary/90 via-secondary/30 to-secondary -z-5"></div>
+  <div class="container mx-auto h-fit flex flex-col justify-center items-center relative z-20 p-8 rounded-lg">
+    <h1 class="text-black font-bold text-5xl text-center">Bienvenido al AgroKiosco 💚💙</h1>
+    <p class="text-black text-4xl text-center mt-4">Un lugar para capturar la magia de cualquier evento y difundirla!</p>
+    <p class="text-black font-semibold text-2xl text-center mt-10">Escoge un evento para comenzar</p>
+    <div class="mt-8 w-full flex flex-wrap justify-center">
+      <div *ngFor="let event of events" class="xl:w-1/4 md:w-1/2 p-6">
+        <div class="relative rounded-lg overflow-hidden flex flex-col justify-end w-full aspect-square h-auto border-2 border-white">
+          <img class="absolute inset-0 w-full h-full object-cover z-0" [src]="event.image" alt="content">
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+          <div class="relative p-6 z-10">
+            <h3 class="tracking-widest text-white text-xs font-medium title-font line-clamp-3">{{event.name}}</h3>
+            <h2 class="text-lg text-white font-medium title-font mb-4 line-clamp-3">{{event.description}}</h2>
+            <div class="mt-auto flex justify-between gap-2">
+              <button (click)="goToMainEvent(event.id)" class="bg-white text-lg transition duration-150 px-6 py-3 rounded-lg text-black">
+                <i class="fa-solid fa-photo-film mr-2"></i> Escoger este Evento
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
