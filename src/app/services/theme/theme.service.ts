@@ -8,7 +8,7 @@ import { Theme } from '../../types/theme';
 })
 export class ThemeService {
 
-  private apiUrl = 'http://localhost:3001/themes'; // Replace with your backend API URL
+  private apiUrl = 'https://totem-ag-api-d5eqccdxebdaf3ek.eastus-01.azurewebsites.net/themes'; // Replace with your backend API URL
 
   constructor(private http: HttpClient) { }
 
