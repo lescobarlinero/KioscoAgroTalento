@@ -1,0 +1,63 @@
+
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+      <div class="flex flex-wrap mb-20">
+        <div class="mr-6 mb-6 lg:mb-0">
+          <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Bienvenido a la administración!</h1>
+          <div class="h-1 w-20 bg-secondary rounded"></div>
+        </div>
+        <!-- <button class="bg-secondary hover:bg-secondary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+          <i class="fa-solid fa-plus mr-2"></i> Agregar Video
+        </button>
+        <button  class="ml-2 bg-primary hover:bg-primary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+          <i class="fa-solid fa-sort"></i> Ordenar Videos
+        </button> -->
+      </div>
+      <div class="w-full flex flex-wrap items-center gap-4">
+		<div class="flex text-white size-56 bg-secondary rounded-xl  justify-center items-center flex-col p-2 gap-3 cursor-pointer" (click)="goTo('gestionar/multimedia')">
+			<i class="text-5xl fa-brands fa-youtube"></i>
+			<p class="text-center text-lg line-clamp-2 min-h-14 flex items-center">Videos, Documentos, Imágenes, etc</p>
+			<p class="px-4 py-2 bg-white rounded-full uppercase text-lg text-secondary">MULTIMEDIA</p>
+		</div>
+        <div class="flex text-white size-56 bg-secondary rounded-xl  justify-center items-center flex-col p-2 gap-3 cursor-pointer" (click)="goTo('gestionar/tags')">
+			<i class="text-5xl fa-solid fa-tag"></i>
+			<p class="text-center text-lg line-clamp-2 min-h-14 flex items-center">Etiquetas para multimedia</p>
+			<p class="px-4 py-2 bg-white rounded-full uppercase text-lg text-secondary">TAGS</p>
+		</div>
+        <div class="flex text-white size-56 bg-secondary rounded-xl  justify-center items-center flex-col p-2 gap-3 cursor-pointer" (click)="goTo('gestionar/eventos')">
+			<i class="text-5xl fa-solid fa-seedling"></i>
+			<p class="text-center text-lg line-clamp-2 min-h-14 flex items-center">Eventos</p>
+			<p class="px-4 py-2 bg-white rounded-full uppercase text-lg text-secondary">EVENTOS</p>
+		</div>
+        <div class="flex text-white size-56 bg-secondary rounded-xl  justify-center items-center flex-col p-2 gap-3 cursor-pointer" (click)="goTo('gestionar/temas')">
+			<i class="text-5xl fa-solid fa-palette"></i>
+			<p class="text-center text-lg line-clamp-2 min-h-14 flex items-center">Color, banner, visuales</p>
+			<p class="px-4 py-2 bg-white rounded-full uppercase text-lg text-secondary">TEMAS</p>
+		</div>
+	</div>
+    </div>
+  </section>
+<!-- 
+  <div class="w-fit max-w-4xl flex flex-wrap justify-center items-center gap-4">
+    <i *ngIf="amountVideos > 3"
+        (click)="prevPage()"
+        class="text-8xl fa-solid fa-caret-left text-secondary"></i>
+
+    <div *ngFor="let video of videos | async; let i = index"
+        [ngClass]="shownVideos.includes(i) ? 'flex':'hidden'"
+        (click)="changeVideoTo(i)"
+        class=" text-white size-56 bg-secondary rounded-xl  justify-center items-center flex-col p-2 gap-3 cursor-pointer">
+        <div *ngIf="video == (currentVideo | async)"
+            class="gap-2 flex px-4 py-2 rounded-full text-white bg-red-400 items-center justify-center text-base -mt-10">
+            Reproduciendo
+            <i class="fa-solid fa-play fa-beat"></i>
+        </div>
+        <i [class]="video.icon + (video.icon === 'fa-youtube' ? ' fa-brands':' fa-solid')"
+            class="text-5xl"></i>
+        <p class="text-center text-xl line-clamp-2">{{video.title}}</p>
+        <p class="px-4 py-2 bg-white rounded-full uppercase text-lg text-secondary">Video Tutorial</p>
+    </div>
+    <i *ngIf="amountVideos > 3"
+        (click)="nextPage()"
+        class="text-8xl fa-solid fa-caret-right text-secondary"></i>
+</div> -->

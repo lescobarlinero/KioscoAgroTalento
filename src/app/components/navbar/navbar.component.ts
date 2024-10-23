@@ -1,13 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  @Input() primaryColor: string = '#079646'; // Usará el color primario por defecto de Tailwind
+  @Input() secondaryColor: string = '#0F5AA3'; // 
+  @Input() banner: string = 'https://kioscostorage.blob.core.windows.net/images/banner-agrosavia.jpg'; 
+  @Input() logo: string = 'https://kioscostorage.blob.core.windows.net/images/logo-agrosavia.png';
+  @Input() background: string = 'https://kioscostorage.blob.core.windows.net/images/bg-agrosavia.png';
+
   currentTime: string = '';
   currentDate: string = '';
   greeting: string = '';
@@ -15,9 +22,10 @@ export class NavbarComponent {
 
   ngOnInit() {
     this.updateDateAndTime();
-    setInterval(() => {
-      this.updateDateAndTime();
-    }, 100);
+    // setInterval(() => {
+    //   this.updateDateAndTime();
+    // }, 100);
+    
   }
 
   updateDateAndTime() {

@@ -1,0 +1,32 @@
+/* Toast container styles */
+.toast-container {
+    @apply fixed bottom-4 right-4 max-w-[90%] bg-white border border-gray-200 rounded-xl shadow-lg;
+    @apply z-[9999]; /* Use a very high z-index to ensure it's on top of everything */
+    @apply transition-opacity duration-300;
+  }
+  
+  /* Initial state */
+  .toast-enter {
+    @apply opacity-0 translate-y-4;
+  }
+  
+  /* Active state (visible) */
+  .toast-enter-active {
+    @apply opacity-100 translate-y-0;
+  }
+  
+  /* Exit state */
+  .toast-exit {
+    @apply opacity-100 translate-y-0;
+  }
+  
+  /* Exit active state (hidden) */
+  .toast-exit-active {
+    @apply opacity-0 translate-y-4;
+  }
+  
+  /* Close button styles */
+  button {
+    @apply ml-auto p-1 text-gray-500 hover:text-gray-700;
+  }
+  

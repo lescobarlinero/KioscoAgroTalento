@@ -1,15 +1,16 @@
 <!-- Navbar -->
-<nav class="w-full max-w-full h-[105px] bg-primary font-sans flex items-center justify-between fixed top-0 left-0 z-50 px-6">
-    <img src="Logo AgroTalento.gif" alt="Logo Agrotalento" class="max-h-16 h-auto w-auto rounded-lg"/> 
-    <div class="bg-red flex flex-col font-semibold text-white items-end">
-      <p class="text-4xl uppercase" (click)="refreshPage()">{{currentTime}}</p>
-      <p class="text-base capitalize">{{currentDate}}</p>
-    </div>
+<nav class="w-full max-w-full h-[105px] font-sans flex items-center justify-between fixed top-0 left-0 z-50 px-6"
+  [ngStyle]="{'background-color': primaryColor}">
+  <img [src]="logo" alt="Logo Agrotalento" class="max-h-16 max-w-72 h-auto w-auto rounded-lg"/> 
+  <div class="flex flex-col font-semibold text-white items-end">
+    <p class="text-4xl uppercase" (click)="refreshPage()">{{currentTime}}</p>
+    <p class="text-base capitalize">{{currentDate}}</p>
+  </div>
 </nav>
 <!-- Banner -->
 <div class="mt-[105px] relative mb-10">
-    <img src="Banner-H2.jpg" alt="Banner AgroTalento" class="w-full h-[280px] object-cover z-10">
-    <div class="absolute inset-0 flex items-center justify-center">
-      <p class="text-white text-4xl font-bold">{{greeting}}</p>
-    </div>
+  <img [src]="banner" alt="Banner AgroTalento" class="w-full h-[280px] object-cover z-10">
+  <div class="absolute inset-0 flex items-center justify-center">
+    <p class="text-white text-4xl font-bold">{{greeting}}</p>
   </div>
+</div>

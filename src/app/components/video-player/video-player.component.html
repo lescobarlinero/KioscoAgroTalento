@@ -1,10 +1,15 @@
 <!-- Contenedor del video -->
-<div class="mx-10 rounded-xl lg:max-w-4xl w-full overflow-hidden relative">
-	<div id="player"
-		class="min-w-full w-auto h-auto aspect-video"></div>
 
+<div *ngIf="multimedia.multimediaTypeId == 1" class="mx-10 rounded-xl lg:max-w-4xl w-full overflow-hidden relative">
+	<div [id]="'player-' + multimedia.id" class="min-w-full w-auto h-auto aspect-video"></div>
 	<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; z-index: 10;"></div>
-	
+  </div>
+
+<div *ngIf="multimedia.multimediaTypeId == 2" class="mx-10 rounded-xl lg:max-w-4xl w-full overflow-hidden relative">
+	<div 
+		class="min-w-full w-auto h-auto aspect-video">
+		<img [src]="multimedia.url" alt="" class="h-full w-full object-cover">
+	</div>
 
 </div>
 
@@ -19,9 +24,9 @@
 	<!-- barra de progreso -->
 	<div id="progress-bar-bg"
 		class="w-full h-2 bg-gray-300 rounded-full flex items-center">
-		<div id="progress-bar-fg"
+		<div [id]="progressBarId"
 			class="h-full bg-secondary rounded-full"></div>
 	</div>
 </div>
 
-<h2 class="text-4xl min-h-20 md:max-w-4xl w-full font-semibold flex px-10 justify-center items-center text-center" style="display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; -webkit-line-clamp: 2; line-clamp: 2;">{{videoTitle}}</h2>
+<h2 *ngIf="showTitle" class="text-4xl min-h-20 md:max-w-4xl w-full font-semibold flex px-10 justify-center items-center text-center" style="display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; -webkit-line-clamp: 2; line-clamp: 2;">{{videoTitle}}</h2>
