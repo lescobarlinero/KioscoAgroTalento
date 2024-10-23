@@ -10,7 +10,7 @@ export class TagService {
   
   constructor(private http:HttpClient) { }
   
-  private apiUrlTags = 'http://localhost:3001/tags'; // Replace with your backend API URL
+  private apiUrlTags = 'https://totem-ag-api-d5eqccdxebdaf3ek.eastus-01.azurewebsites.net/tags'; // Replace with your backend API URL
   
   getTags(): Observable<Tag[]> {
     return this.http.get<any>(`${this.apiUrlTags}`);
