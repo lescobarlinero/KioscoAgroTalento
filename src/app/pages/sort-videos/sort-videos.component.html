@@ -38,7 +38,7 @@
 				(cdkDropListExited)="onExit($event, 'allMediaList')"
 				[ngClass]="{'highlight': highlightedList === 'allMediaList'}">
 				<div class="flex flex-col gap-2">
-					<div *ngFor="let media of allMedia; let i = index" class="w-full flex" cdkDrag>
+					<div *ngFor="let media of allMedia; let i = index" class="w-full flex" cdkDrag [cdkDragData]="media">
 						<div class="bg-gray-200 p-6 rounded-lg flex min-h-full min-w-full items-center">
 							<img [src]="getImage(media)"
 								class="h-28 rounded w-auto aspect-video object-cover object-center mr-4" alt="content">
@@ -59,9 +59,9 @@
 				id="carrouselList" [cdkDropListConnectedTo]="[allMediaList, extraList]"
 				(cdkDropListEntered)="onEnter($event, 'carrouselList')"
 				(cdkDropListExited)="onExit($event, 'carrouselList')"
-				[ngClass]="{'highlight': highlightedList === 'carrouselList'}">
+				[ngClass]="{'highlight': highlightedList === 'carrouselList', 'error': errorList === 'carrouselList'}">
 				<div class="flex flex-col gap-2">
-					<div *ngFor="let media of carrouselMedia; let i = index" class="w-full flex" cdkDrag>
+					<div *ngFor="let media of carrouselMedia; let i = index" class="w-full flex" cdkDrag [cdkDragData]="media">
 						<div class="bg-gray-200 p-6 rounded-lg flex min-h-full min-w-full items-center">
 							<img [src]="getImage(media)"
 								class="h-28 rounded w-auto aspect-video object-cover object-center mr-4" alt="content">
@@ -83,7 +83,7 @@
 				(cdkDropListEntered)="onEnter($event, 'extraList')" (cdkDropListExited)="onExit($event, 'extraList')"
 				[ngClass]="{'highlight': highlightedList === 'extraList'}">
 				<div class="flex flex-col gap-2">
-					<div *ngFor="let media of extraMedia; let i = index" class="w-full flex" cdkDrag>
+					<div *ngFor="let media of extraMedia; let i = index" class="w-full flex" cdkDrag [cdkDragData]="media">
 						<div class="bg-gray-200 p-6 rounded-lg flex min-h-full min-w-full items-center">
 							<img [src]="getImage(media)"
 								class="h-28 rounded w-auto aspect-video object-cover object-center mr-4" alt="content">

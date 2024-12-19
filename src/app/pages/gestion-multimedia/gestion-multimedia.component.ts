@@ -40,6 +40,10 @@ export class GestionMultimediaComponent {
     if (multimedia.multimediaType?.name === 'YOUTUBE_VIDEO') {
       return this.getVideoThumbnail(multimedia.url);
     }
+
+    if (multimedia.multimediaType?.name === 'FILE') {
+      return 'pdf-1.png';
+    }
     return multimedia.url;
   }
 

@@ -65,8 +65,7 @@
                 <input type="file" (change)="onFileChange($event, 'image')"
                   class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-200 rounded-md focus:outline-none text-gray-600">
                 <div *ngIf="imagePreview" class="mt-4 w-full h-40 flex justify-center">
-                  <img [src]="imagePreview" alt="Event Image Preview"
-                    class="w-full h-full object-contain rounded-lg shadow-md">
+                  
                 </div>
                 <span *ngIf="imagePreview" class="w-full text-center text-sm mt-1">Banner Actual</span>
               </div>
@@ -78,6 +77,11 @@
                 </p>
                 <input type="file" (change)="onFileChange($event, 'file')"
                   class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-200 rounded-md focus:outline-none text-gray-600">
+                <div *ngIf="urlFile" class="mt-4 w-full h-40 flex justify-center">
+                  <a [href]="urlFile" target="_blank">
+                    <i class="fa-solid fa-file-pdf"></i> Ver archivo
+                  </a>
+                </div>
               </div>
             </div>
             <div class="z-10 bg-white rounded-lg shadow">

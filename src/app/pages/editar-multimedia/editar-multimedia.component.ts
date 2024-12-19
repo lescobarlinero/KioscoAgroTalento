@@ -43,6 +43,7 @@ export class EditarMultimediaComponent {
   multimediaTypes: any = [];
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
+  urlFile: string = '';
 
   constructor(
     private multimediaService: MultimediaService,
@@ -79,9 +80,13 @@ export class EditarMultimediaComponent {
           multimediaTypeId: multimedia.multimediaTypeId,
           url: multimedia.url,
         });
-        this.imagePreview = multimedia.url;
+        if (multimedia.multimediaType.name === 'FILE') {
+          this.urlFile = multimedia.url;
+        }
+        if (multimedia.multimediaType.name === 'IMAGE') {
+          this.imagePreview = multimedia.url;
+        }
         this.initialiseTagCheckboxes();
-
       });
     }
   }

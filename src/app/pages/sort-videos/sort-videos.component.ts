@@ -25,6 +25,7 @@ export class SortVideosComponent {
   extraMedia: Multimedia[] = [];
   videosAmount: number = 0;
   highlightedList: string | null = null;
+  errorList: string | null = null;
 
   constructor(private eventService: EventService, private multimediaService: MultimediaService, private router: Router, private route: ActivatedRoute) { }
 
@@ -71,6 +72,10 @@ export class SortVideosComponent {
   }
 
   getImage(multimedia: Multimedia): string {
+    if (multimedia.multimediaType?.name === 'FILE') {
+      return 'pdf-1.png';
+    }
+
     if (multimedia.multimediaType?.name === 'YOUTUBE_VIDEO') {
       return this.getVideoThumbnail(multimedia.url);
     }
@@ -120,6 +125,12 @@ export class SortVideosComponent {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
+      if (event.container.id === 'carrouselList' && event.previousContainer.data[event.previousIndex].multimediaType.name === 'FILE') {
+        this.highlightedList = null;
+        this.errorList = null;
+        alert('No se pueden añadir archivos al carrusel');
+        return;
+      };
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -137,12 +148,12 @@ export class SortVideosComponent {
             console.log('Multimedia eliminado:', response);
           });
         }
-
+        
         this.eventService.addMultimediaToEvent(
           this.eventId,
           event.container.data[event.currentIndex].id,
           undefined,
-          event.container.id === 'carrouselList',
+          isCarrousel,
           event.currentIndex).subscribe(response => {
             console.log('Multimedia añadido:', response);
           });
@@ -150,17 +161,27 @@ export class SortVideosComponent {
     }
 
     this.highlightedList = null;
+    this.errorList = null;
   }
 
 
 
   onEnter(event: CdkDragEnter, listId: string) {
+    console.log('Enter:', event.item.data);
+    if (event.item.data.multimediaType.name === 'FILE' && listId === 'carrouselList') {
+      this.errorList = listId;
+      console.log('Error list:', this.errorList);
+      
+      return;  
+    }
+    this.errorList = null;
     this.highlightedList = listId;
   }
 
   onExit(event: CdkDragExit, listId: string) {
     if (this.highlightedList === listId) {
       this.highlightedList = null;
+      this.errorList = null;
     }
   }
 

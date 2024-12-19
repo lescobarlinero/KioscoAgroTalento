@@ -5,11 +5,12 @@ import { ModalService } from '../../services/modal.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { VideoPlayerComponent } from '../../components/video-player/video-player.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [CommonModule, VideoPlayerComponent, PdfViewerModule],
+  imports: [CommonModule, VideoPlayerComponent, PdfViewerModule, NgxExtendedPdfViewerModule],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css'
 })
