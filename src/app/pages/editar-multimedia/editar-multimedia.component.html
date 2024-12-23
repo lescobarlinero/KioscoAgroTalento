@@ -65,9 +65,9 @@
                 <input type="file" (change)="onFileChange($event, 'image')"
                   class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-200 rounded-md focus:outline-none text-gray-600">
                 <div *ngIf="imagePreview" class="mt-4 w-full h-40 flex justify-center">
-                  
+                  <img [src]="imagePreview" alt="Event Image Preview" class="w-full h-full object-contain rounded-lg shadow-md">
                 </div>
-                <span *ngIf="imagePreview" class="w-full text-center text-sm mt-1">Banner Actual</span>
+                <span *ngIf="imagePreview" class="w-full text-center text-sm mt-1">Imágen Actual</span>
               </div>
               <div *ngSwitchCase="3" class="flex flex-col">
                 <label class="leading-loose">Adjunta tu archivo:</label>
