@@ -25,11 +25,12 @@
 
               <ul class="flex w-full justify-between">
                 @for (multimediaType of multimediaTypes; track multimediaType) {
-                <li (click)="resetPreview()">
+                <li (click)="resetPreview()" >
                   <input [formControl]="multimediaForm.controls.multimediaTypeId" type="radio" [id]="multimediaType.id"
-                    name="hosting" [value]="multimediaType.id" class="hidden peer" required />
+                    name="hosting" [value]="multimediaType.id" class="hidden peer" required [attr.disabled]="editable"/>
                   <label [htmlFor]="multimediaType.id"
-                    class="flex flex-col items-center justify-center size-36 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
+                    class="flex flex-col items-center justify-center size-36 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100"
+                    [class]="editable == null ? '' : 'cursor-not-allowed'">
                     <i [class]="multimediaType.iconClass" class="text-2xl"></i>
                     <span class="text-sm mt-1">{{ multimediaType.verboseName }}</span>
                   </label>
@@ -62,7 +63,7 @@
                   <i class="fa-solid fa-circle-exclamation mr-1"></i>
                   Debe ser una IMÁGEN!
                 </p>
-                <input type="file" (change)="onFileChange($event, 'image')"
+                <input type="file" (change)="onFileChange($event, 'image')" accept="image/*" 
                   class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-200 rounded-md focus:outline-none text-gray-600">
                 <div *ngIf="imagePreview" class="mt-4 w-full h-40 flex justify-center">
                   <img [src]="imagePreview" alt="Event Image Preview" class="w-full h-full object-contain rounded-lg shadow-md">
@@ -75,11 +76,11 @@
                   <i class="fa-solid fa-circle-exclamation mr-1"></i>
                   Debe ser un archivo PLANO (PDF)!
                 </p>
-                <input type="file" (change)="onFileChange($event, 'file')"
+                <input type="file" (change)="onFileChange($event, 'file')" accept="application/pdf" 
                   class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-200 rounded-md focus:outline-none text-gray-600">
-                <div *ngIf="urlFile" class="mt-4 w-full h-40 flex justify-center">
+                <div *ngIf="urlFile" class="mt-4 w-full py-2 rounded-md h-fit flex justify-center bg-slate-400/10">
                   <a [href]="urlFile" target="_blank">
-                    <i class="fa-solid fa-file-pdf"></i> Ver archivo
+                    <i class="fa-solid fa-file-pdf"></i> Ver Archivo Actual
                   </a>
                 </div>
               </div>
@@ -122,6 +123,7 @@
               </svg> Volver a multimedia
             </button>
             <button type="button" *ngIf="!newMultimedia"
+              (click)="showConfirmationModal = true"
               class="flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none bg-red-400 hover:bg-red-500">
               <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg">
@@ -139,3 +141,12 @@
     </div>
   </div>
 </div>
+
+<app-confirmation-modal
+  *ngIf="showConfirmationModal"
+  [title]="'Borrar Multimedia'"
+  [description]="'Estás seguro que deseas eliminar este elemento multimedia? Esta acción no se puede deshacer.'"
+  [confirmText]="'Eliminar'"
+  [cancelText]="'No estoy seguro'"
+  (response)="handleModalResponse($event)"
+></app-confirmation-modal>

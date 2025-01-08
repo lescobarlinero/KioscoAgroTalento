@@ -6,16 +6,18 @@ import { ToastService } from '../../services/toast.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ThemeService } from '../../services/theme/theme.service';
+import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-editar-evento',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ConfirmationModalComponent],
   templateUrl: './editar-evento.component.html',
   styleUrls: ['./editar-evento.component.css'] // Fixed styleUrl to styleUrls
 })
 export class EditarEventoComponent {
 
+  showConfirmationModal: boolean = false;
   eventId: number = 0;
   eventData: any = {};
   selectedFile: File | null = null; // New property to hold the selected file
@@ -111,15 +113,16 @@ export class EditarEventoComponent {
   }
 
   onSubmit(): void {
+    
     const dataToSend: any = {
       id: this.eventId,
       name: this.eventGroup.value.eventName,
       description: this.eventGroup.value.eventDescription,
       date: this.formatDateToDDMMYYYY(this.eventGroup.value.eventDate ?? '') ?? '',
       themeId: this.eventGroup.value.eventTheme ?? null,
-      active: this.eventGroup.value.eventActive ? true : false,
+      active: this.eventGroup.value.eventActive ?? false,
     };
-  
+    
     if (this.selectedFile) {
       dataToSend.image = this.selectedFile;
     }
@@ -139,18 +142,22 @@ export class EditarEventoComponent {
     }
   }
   deleteEvent() {
-    const confirmation = confirm('¿Estás seguro de que deseas eliminar este evento?');
-    if (confirmation) {
-      this.eventService.deleteEvent(this.eventId).subscribe(
-        response => {
-          this.toastService.showToast('Evento eliminado con éxito!');
-          this.goToEvents();
-        },
-        error => {
-          this.toastService.showToast('Error al eliminar el evento.');
-        }
-      );
+    this.eventService.deleteEvent(this.eventId).subscribe(
+      response => {
+        this.toastService.showToast('Evento eliminado con éxito!');
+        this.goToEvents();
+      },
+      error => {
+        this.toastService.showToast('Error al eliminar el evento.');
+      }
+    );
+  }
+
+  handleModalResponse(userResponse: boolean): void {
+    if (userResponse) {
+      this.deleteEvent();
     }
+    this.showConfirmationModal = false;
   }
   
 }

@@ -46,8 +46,6 @@ export class NavbarComponent {
     } else {
       this.greeting = hour === 12 ? '¡Buenas tardes!' : '¡Buenas noches!';
     }
-
-
   }
 
   refreshPage() {

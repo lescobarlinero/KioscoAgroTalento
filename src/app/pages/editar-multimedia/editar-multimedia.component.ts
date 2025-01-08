@@ -13,11 +13,13 @@ import { MultimediaService } from '../../services/multimedia/multimedia.service'
 import { ToastService } from '../../services/toast.service';
 import { TagService } from '../../services/tag/tag.service';
 import { Tag } from '../../types/tag';
+import { ModalService } from '../../services/modal.service';
+import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-editar-multimedia',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FormsModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, ConfirmationModalComponent],
   templateUrl: './editar-multimedia.component.html',
   styleUrl: './editar-multimedia.component.css',
 })
@@ -44,12 +46,14 @@ export class EditarMultimediaComponent {
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
   urlFile: string = '';
+  editable: boolean | null = false;
+  showConfirmationModal: boolean = false;
 
   constructor(
     private multimediaService: MultimediaService,
     private toastService: ToastService,
     private router: Router,
-    private tagService: TagService
+    private tagService: TagService,
   ) {}
   
   ngOnInit() {
@@ -68,6 +72,7 @@ export class EditarMultimediaComponent {
 
     if (lastPart === 'new') {
       this.newMultimedia = true;
+      this.editable = null;
       return;
     }
 
@@ -80,10 +85,12 @@ export class EditarMultimediaComponent {
           multimediaTypeId: multimedia.multimediaTypeId,
           url: multimedia.url,
         });
-        if (multimedia.multimediaType.name === 'FILE') {
+        if (multimedia.multimediaType.name == 'FILE') {
           this.urlFile = multimedia.url;
         }
-        if (multimedia.multimediaType.name === 'IMAGE') {
+        if (multimedia.multimediaType.name == 'IMAGE') {
+          console.log('lol', multimedia.url);
+          
           this.imagePreview = multimedia.url;
         }
         this.initialiseTagCheckboxes();
@@ -168,11 +175,39 @@ export class EditarMultimediaComponent {
   }
 
   resetPreview(): void {
-    this.imagePreview = null;
+    if (this.editable == null) {
+      this.imagePreview = null;
+    }
   }
 
   goBack(): void {
     this.router.navigate(['/gestionar/multimedia']);
+  }
+
+  hideModal(): void {
+    this.showConfirmationModal = false;
+  }
+
+  handleModalResponse(userConfirmed: boolean) {
+    if (userConfirmed) {
+      this.deleteMultimedia();
+    } else {
+      this.showConfirmationModal = false;
+    }
+  }
+
+  deleteMultimedia(): void {
+    if (this.multimedia) {
+      this.multimediaService.deleteMultimedia(this.multimedia.id).subscribe(
+        (response) => {
+          this.toastService.showToast('Multimedia deleted successfully');
+          this.goBack();
+        },
+        (error) => {
+          this.toastService.showToast('Error deleting multimedia');
+        }
+      );
+    }
   }
 
 }

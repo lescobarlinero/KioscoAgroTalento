@@ -34,4 +34,8 @@ export class GestionTagsComponent {
     this.router.navigate(['/gestionar/tags', 'new']);
   }
 
+  goBack() {
+    this.router.navigate(['/gestionar']);
+  }
+
 }

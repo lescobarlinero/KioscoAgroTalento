@@ -2,7 +2,7 @@
 	(mediaEnded)="nextMedia()" [playerOverrideEvents]="playerEventOverrideSubject.asObservable()"
 	class="flex justify-center items-center flex-col mx-8"></app-video-player>
 <!-- botones y puntos correspondientes a cantidad de videos en carrusel -->
-<div class="mt-14 text-6xl h-fit flex justify-center items-center gap-4">
+<div class="mt-14 text-6xl bg-white h-fit flex justify-center items-center gap-4">
 	<button (click)="prevMedia()"
 		class="mr-10 text-secondary">
 		<i class="fa-solid fa-circle-chevron-left"></i>
@@ -24,8 +24,8 @@
 		<i class="fa-solid fa-circle-chevron-right"></i>
 	</button>
 </div>
-<div class="w-full flex flex-col justify-center items-center mt-8 mb-14">
-	<h2 class="text-2xl font-semibold mt-14 mb-20">
+<div class="w-full flex flex-col justify-center items-center mb-14 relative">
+	<h2 class="text-2xl font-semibold mt-14 mb-20 z-20">
 		Descubre Más Contenido
 	</h2>
 	<div class="max-w-3xl flex flex-nowrap items-start gap-4 overflow-x-scroll mb-2 px-10 py-4">
@@ -33,8 +33,12 @@
 			class=" text-white  flex size-56 flex-shrink-0 bg-secondary rounded-xl justify-center items-center flex-col p-2 gap-3 cursor-pointer">
 			<i class="fa-solid fa-info-circle text-5xl"></i>
 			<p class="text-center text-xl line-clamp-2">{{mm.multimedia.name}}</p>
-			<p class="px-4 py-2 bg-white rounded-full uppercase text-lg text-secondary">{{ mm.multimedia.multimediaType.verboseName }}</p>
+			<p class="px-4 py-2 rounded-full uppercase text-lg bg-white text-secondary">{{ mm.multimedia.multimediaType.verboseName }}</p>
 		</div>
 	</div>
-
+	<div class="custom-shape-divider-top-1735330299">
+		<svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+			<path d="M602.45,3.86h0S572.9,116.24,281.94,120H923C632,116.24,602.45,3.86,602.45,3.86Z" class="shape-fill"></path>
+		</svg>
+	</div>
 </div>
