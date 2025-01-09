@@ -25,7 +25,10 @@
                 <div *ngSwitchCase="2"></div>
                     <img class="max-w-full w-full aspect-auto h-auto rounded-lg" [src]="getMediaUrl()" alt="">
                 <div *ngSwitchCase="3">
-                    <pdf-viewer [src]="content.url"></pdf-viewer>
+                    <ngx-extended-pdf-viewer 
+                        [showToolbar]="false"
+                        [src]="content.url"> 
+                    </ngx-extended-pdf-viewer>
                 </div>
 
             </div>

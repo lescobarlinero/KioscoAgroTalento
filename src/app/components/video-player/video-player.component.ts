@@ -53,8 +53,18 @@ export class VideoPlayerComponent implements OnInit {
   }
 
   ngOnChanges(changes: any) {
-    if (changes.multimedia) {
+    if (changes.multimedia && this.showTitle) {
       if (this.player) this.player.destroy();
+      // if there is an old div, remove it
+      const oldPlayerDiv = document.getElementById(`player-${changes.multimedia.previousValue?.id}`);
+      if (oldPlayerDiv) {
+        oldPlayerDiv.remove();
+      }
+      // create a new div with the id of the multimedia id
+      const playerDiv = document.createElement('div');
+      playerDiv.id = `player-${changes.multimedia.currentValue.id}`;
+      playerDiv.classList.value = "min-w-full w-auto h-auto aspect-video"
+      document.getElementById('videoholder')?.prepend(playerDiv);
       this.startVideo();
     }
   }
@@ -69,13 +79,19 @@ export class VideoPlayerComponent implements OnInit {
   
   /* 2. Initialize method for YT IFrame API */
   init() {
+    let existingTag = document.getElementById('iframe-api');
+    if (existingTag) {
+      this.startVideo();
+      return;
+    };
     var tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
+    tag.id = 'iframe-api';
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
 
     /* 3. startVideo() will create an <iframe> (and YouTube player) after the API code downloads. */
-    (window as any)['onYouTubeIframeAPIReady'] = () => this.startVideo();
+    (window as any)['onYouTubeIframeAPIReady'] = () => this.startVideo(); 
   }
   startVideo() {
     if (this.isYoutubeVideo(this.multimedia)) {
@@ -86,7 +102,7 @@ export class VideoPlayerComponent implements OnInit {
         setTimeout(() => {
           this.startVideo();
         }, 500);
-        console.log('player div not found, waiting');
+        console.log('player div not found, waiting', playerDiv);
         return;
       }
       this.player = new (window as any)['YT'].Player(`player-${this.multimedia.id}`, {
@@ -181,12 +197,16 @@ export class VideoPlayerComponent implements OnInit {
   updateProgressBar() {
     // Update the value of our progress bar
     var progressBar = document.getElementById(this.progressBarId);
+    const playerDiv = document.getElementById(`player-${this.multimedia.id}`);
+    if (!playerDiv) {
+      return;
+    }
     try {
       if (progressBar) {
-        progressBar.style.width = (this.player.getCurrentTime() / this.player.getDuration() * 100) + '%';
+        progressBar.style.width = (this.player.playerInfo.currentTime / this.player.playerInfo.duration * 100) + '%';
       }
     } catch (error) {
-      console.error('Error updating progress bar', error);
+      console.error('Error updating progress bar', this.player);
       return;
     }
   }

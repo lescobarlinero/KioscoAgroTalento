@@ -25,7 +25,12 @@
                 "glob": "**/*",
                 "input": "public"
               },
-              "src/web.config"
+              "src/web.config",
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-extended-pdf-viewer/assets/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "src/styles.css"
