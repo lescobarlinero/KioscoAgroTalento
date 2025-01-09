@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.highlight {
+    background-color: rgb(160, 193, 247); /* Un color de resaltado, ajustable */
+    transition: background-color 0.3s ease;
+    @apply  border-2 border-dashed border-secondary;
+  }
+
+.error {
+    background-color: rgb(252, 120, 63); /* Un color de resaltado, ajustable */
+    transition: background-color 0.3s ease;
+    @apply  border-2 border-dashed border-red-500;
+    cursor: not-allowed;
+}
+  

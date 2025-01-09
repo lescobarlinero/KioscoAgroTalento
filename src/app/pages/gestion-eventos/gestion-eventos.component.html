@@ -1,0 +1,42 @@
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+      <div class="flex flex-wrap mb-20">
+        <div class="mr-6 mb-6 lg:mb-0">
+          <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
+            Gestión de Eventos
+          </h1>
+          <div class="h-1 w-20 bg-secondary rounded"></div>
+        </div>
+        <button (click)="goToNewEvent()" class="ml-2 bg-secondary hover:bg-secondary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+          <i class="fa-solid fa-plus"></i> Crear Evento
+        </button>
+        <button (click)="goToManagement()" class="ml-2 bg-primary hover:bg-primary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+          <i class="fa-solid fa-arrow-left"></i> Volver a Gestión General
+        </button>
+      </div>
+      <div class="flex w-full flex-wrap -m-4">
+        <div *ngFor="let event of events" class="xl:w-1/4 md:w-1/2 p-4">
+          <div  class="relative rounded-lg overflow-hidden flex flex-col justify-end w-full aspect-square h-auto">
+            <!-- Image with gradient overlay -->
+            <img class="absolute inset-0 w-full h-full object-cover z-0" [src]="event.image" alt="content">
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-primary to-transparent"></div>
+            <!-- Content -->
+            <div class="relative p-6 z-10">
+              <h3 class="tracking-widest text-white text-xs font-medium title-font line-clamp-3">{{event.name}}</h3>
+              <h2 class="text-lg text-white font-medium title-font mb-4 line-clamp-3">{{event.description}}</h2>
+              <div class="mt-auto flex justify-between gap-2">
+                <button (click)="goToEvent(event.id)" class="bg-secondary hover:bg-secondary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+                  <i class="fa-solid fa-pencil"></i>
+                </button>
+                <button (click)="goToEventMedia(event.id)" class="bg-primary hover:bg-primary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+                  <i class="fa-solid fa-photo-film mr-2"></i> Gestionar Multimedia
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

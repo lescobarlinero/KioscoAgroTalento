@@ -1,0 +1,138 @@
+<div class="py-6 flex flex-col justify-center sm:py-12">
+    <div class="relative py-3 sm:max-w-4xl w-full sm:mx-auto">
+        <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
+            <div class="max-w-2xl mx-auto">
+                <div class="flex items-center space-x-5">
+                    <div
+                        class="h-14 w-14 bg-red-200 rounded-full flex flex-shrink-0 justify-center items-center text-red-500 text-2xl font-mono">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
+                        <h2 *ngIf="!newTheme" class="leading-relaxed">Editar Tema</h2>
+                        <h2 *ngIf="newTheme" class="leading-relaxed">Crear Tema</h2>
+                        <p class="text-sm text-red-400 font-normal leading-relaxed">
+                            <i class="fa-solid fa-circle-exclamation mr-1"></i>
+                            Hay campos requeridos
+                        </p>
+                    </div>
+                </div>
+                <div class="divide-y divide-gray-200">
+                    <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                        <!-- Event Name -->
+                        <div class="flex flex-col">
+                            <label class="leading-loose"><span class="text-red-400 text-lg">*</span>Nombre del Tema:</label>
+                            <input type="text" [formControl]="themeForm.controls.name" 
+                                class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                                placeholder="Event title">
+                        </div>
+                        <div class="flex flex-col">
+                            <span><span class="text-red-400 text-lg">*</span>Colores del tema:</span>
+                            <div class="h-full w-full flex items-center justify-between  rounded-sm border border-gray-300 px-4 py-2">
+                            <div class="flex flex-col items-center">
+                                <label class="leading-loose">Primario</label>
+                                <ngx-colors [formControl]="themeForm.controls.primaryColor"  ngx-colors-trigger style="display: inline-block; margin:5px;"></ngx-colors>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <label class="leading-loose">Secundario</label>
+                                <ngx-colors [formControl]="themeForm.controls.secondaryColor" ngx-colors-trigger style="display: inline-block; margin:5px;"></ngx-colors>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <label class="leading-loose">Terciario</label>
+                                <ngx-colors [formControl]="themeForm.controls.tertiaryColor" ngx-colors-trigger style="display: inline-block; margin:5px;"></ngx-colors>
+                            </div>
+                        </div>
+                        </div>
+                        <!-- Event Image -->
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Logo del tema:</label>
+                            <p class="text-sm text-red-400 font-normal mb-2">
+                                <i class="fa-solid fa-circle-exclamation mr-1"></i>
+                                Recomendamos una imagen con fondo transparente y de altura máxima 64px
+                            </p>
+                            <input type="file" (change)="onFileChange($event, 'logo')"
+                                class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600">
+                            
+                            <!-- Image Preview -->
+                            <div *ngIf="logoPreview" class="mt-4 w-full h-40 flex justify-center">
+                                <img [src]="logoPreview" alt="Event Image Preview" class="bg-gray-300 w-full h-full object-contain rounded-lg shadow-md">
+                            </div>
+                            <span *ngIf="logoPreview" class="w-full text-center text-sm mt-1">Logo Actual</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Banner del tema:</label>
+                            <p class="text-sm text-red-400 font-normal mb-2">
+                                <i class="fa-solid fa-circle-exclamation mr-1"></i>
+                                Recuerda que el banner se verá en un espacio de 1080x280 pixeles
+                            </p>
+                            <input type="file" (change)="onFileChange($event, 'banner')"
+                                class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-200 rounded-md focus:outline-none text-gray-600">
+                            
+                            <!-- Image Preview -->
+                            <div *ngIf="bannerPreview" class="mt-4 w-full h-40 flex justify-center">
+                                <img [src]="bannerPreview" alt="Event Image Preview" class="w-full h-full object-contain rounded-lg shadow-md">
+                            </div>
+                            <span *ngIf="bannerPreview" class="w-full text-center text-sm mt-1">Banner Actual</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Fondo del tema:</label>
+                            <p class="text-sm text-red-400 font-normal mb-2">
+                                <i class="fa-solid fa-circle-exclamation mr-1"></i>
+                                Recomendamos una imágen con fondo transparente!
+                            </p>
+                            <input type="file" (change)="onFileChange($event, 'background')"
+                                class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600">
+                            
+                            <!-- Image Preview -->
+                            <div *ngIf="backgroundPreview" class="mt-4 w-full h-40 flex justify-center">
+                                <img [src]="backgroundPreview" alt="Event Image Preview" class="w-full h-full object-contain rounded-lg shadow-md">
+                            </div>
+                            <span *ngIf="backgroundPreview" class="w-full text-center text-sm mt-1">Fondo Actual</span>
+                        </div>
+                    </div>
+                    <!-- Buttons -->
+                    <div class="pt-4 flex items-center space-x-4">
+                        <button type="button"
+                            (click)="goTo('/gestionar/temas')"
+                            class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none">
+                            <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
+                            </svg> Volver a temas
+                        </button>
+                        <button type="button"
+                            *ngIf="!newTheme"
+                            class="flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none bg-red-400 hover:bg-red-500">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg> Eliminar
+                        </button>
+                        <button type="button" 
+                            (click)="onSubmit()"
+                            class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">
+                            <i class="fa-solid fa-plus mr-2"></i>
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<!-- <div class="max-w-xs bg-white border border-gray-200 rounded-xl shadow-lg dark:bg-neutral-800 dark:border-neutral-700" role="alert" tabindex="-1" aria-labelledby="hs-toast-normal-example-label">
+    <div class="flex p-4">
+      <div class="shrink-0">
+        <svg class="shrink-0 size-4 text-blue-500 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"></path>
+        </svg>
+      </div>
+      <div class="ms-3">
+        <p id="hs-toast-normal-example-label" class="text-sm text-gray-700 dark:text-neutral-400">
+          This is a normal message.
+        </p>
+      </div>
+    </div>
+  </div> -->
+<!-- End Toast -->

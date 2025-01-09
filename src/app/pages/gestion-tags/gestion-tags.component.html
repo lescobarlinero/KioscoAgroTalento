@@ -1,0 +1,29 @@
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+      <div class="flex flex-wrap mb-20">
+        <div class="mr-6 mb-6 lg:mb-0">
+          <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
+            Gestión de Categorías
+          </h1>
+          <div class="h-1 w-20 bg-secondary rounded"></div>
+        </div>
+        <button (click)="createTag()"
+        class="ml-2 bg-secondary hover:bg-secondary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+          <i class="fa-solid fa-plus"></i> Crear Categoría
+        </button>
+        <button (click)="goBack()" class="ml-2 bg-primary hover:bg-primary/90 transition-colors duration-100 ease-in-out px-4 py-2 rounded-md text-white">
+          <i class="fa-solid fa-arrow-left"></i> Volver a Gestión General
+        </button>
+      </div>
+      <div class="flex w-full flex-wrap -m-4">
+            <div *ngFor="let category of categories"
+            class="xl:w-1/3 md:w-1/2 p-4">
+                <div class="border border-gray-700 border-opacity-75 p-6 rounded-lg bg-gray-100">
+                    <h2 class="text-lg font-medium title-font mb-2">{{category.verboseName}}</h2>
+                    <p class="leading-relaxed text-base">Código: {{category.name}}</p>
+                </div>
+            </div>
+      </div>
+    </div>
+</section>
+  

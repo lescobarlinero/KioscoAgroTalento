@@ -1,0 +1,130 @@
+<div class="py-6 flex flex-col justify-center sm:py-12">
+    <div class="relative py-3 sm:max-w-4xl w-full sm:mx-auto">
+        <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
+            <div class="max-w-2xl mx-auto">
+                <div class="flex items-center space-x-5">
+                    <div
+                        class="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                    <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
+                        <h2 class="leading-relaxed">Editar Evento</h2>
+                        <p class="text-sm text-red-400 font-normal leading-relaxed">
+                            <i class="fa-solid fa-circle-exclamation mr-1"></i>
+                            Hay campos requeridos
+                        </p>
+                    </div>
+                </div>
+                <div class="divide-y divide-gray-200">
+                    <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                        <!-- Event Name -->
+                        <div class="flex flex-col">
+                            <label class="leading-loose"><span class="text-red-400 text-lg">*</span>Nombre del Evento:</label>
+                            <input type="text" [formControl]="eventGroup.controls['eventName']"
+                                class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                                placeholder="Event title">
+                        </div>
+                        <!-- Event Description -->
+                        <div class="flex flex-col">
+                            <label class="leading-loose"><span class="text-red-400 text-lg">*</span>Descripción del Evento:</label>
+                            <input type="text" [formControl]="eventGroup.controls['eventDescription']"
+                                class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                                placeholder="Descripción">
+                        </div>
+                        <!-- Event Date -->
+                        <div class="flex flex-col">
+                            <label class="leading-loose"><span class="text-red-400 text-lg">*</span>Fecha del Evento:</label>
+                            <input type="date" [formControl]="eventGroup.controls['eventDate']"
+                                class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                                placeholder="DD/MM/YYYY">
+                        </div>
+                        <!-- Event Theme -->
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Tema del Evento:</label>
+                            <p class="text-sm mb-2"><i class="fa-solid fa-palette mr-1"></i>Estos son los colores e
+                                imágenes que tendrá el totem para este evento.</p>
+                            <select [formControl]="eventGroup.controls['eventTheme']"
+                                class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600">
+                                <option *ngFor="let theme of themes" [value]="theme.id">{{theme.name == 'DEFAULT' ? 'Tema por defecto':theme.name}}</option>
+                            </select>
+
+                            <div class="w-full h-20 rounded-lg mt-4 flex gap-2">
+                                <div class="flex flex-col items-center w-1/3">
+                                    <div class="w-full h-full aspect-square rounded-lg"
+                                        [ngStyle]="{ 'background-color': eventTheme?.primaryColor ?? 'gray' }"></div>
+                                    <span class="text-sm mt-1">Primario</span>
+                                </div>
+                                <div class="flex flex-col items-center w-1/3">
+                                    <div class="w-full h-full aspect-square rounded-lg"
+                                        [ngStyle]="{ 'background-color': eventTheme?.secondaryColor ?? 'gray' }"></div>
+                                    <span class="text-sm mt-1">Secundario</span>
+                                </div>
+                                <div class="flex flex-col items-center w-1/3">
+                                    <div class="w-full h-full aspect-square rounded-lg"
+                                        [ngStyle]="{ 'background-color': eventTheme?.tertiaryColor ?? 'gray' }"></div>
+                                    <span class="text-sm mt-1">Terciario</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Event Active -->
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Estado del Evento:</label>
+                            <select [formControl]="eventGroup.controls['eventActive']"
+                                class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600">
+                                <option [value]="true">Activo</option>
+                                <option [value]="false">Inactivo</option>
+                            </select>
+                        </div>
+                        <!-- Event Image -->
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Imagen del Evento:</label>
+                            <input type="file" (change)="onFileChange($event)"
+                                class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600">
+                            
+                            <!-- Image Preview -->
+                            <div *ngIf="imagePreview" class="mt-4 w-full h-40 flex justify-center">
+                                <img [src]="imagePreview" alt="Event Image Preview" class="w-full h-full object-cover rounded-lg shadow-md">
+                            </div>
+                            <span *ngIf="imagePreview" class="w-full text-center text-sm mt-1">Portada Actual</span>
+                        </div>
+                    </div>
+                    <!-- Buttons -->
+                    <div class="pt-4 flex items-center space-x-4">
+                        <button type="button"
+                            (click)="goToEvents()"
+                            class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none">
+                            <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
+                            </svg> Volver a eventos
+                        </button>
+                        <button type="button"
+                            (click)="showConfirmationModal = true"
+                            class="flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none bg-red-400 hover:bg-red-500">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg> Eliminar
+                        </button>
+                        <button type="button" (click)="onSubmit()"
+                            class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">
+                            <i class="fa-solid fa-plus mr-2"></i>
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-confirmation-modal
+  *ngIf="showConfirmationModal"
+  [title]="'Borrar Evento'"
+  [description]="'Estás seguro que deseas eliminar este evento? Esta acción no se puede deshacer.'"
+  [confirmText]="'Eliminar'"
+  [cancelText]="'No estoy seguro'"
+  (response)="handleModalResponse($event)"
+></app-confirmation-modal>

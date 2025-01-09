@@ -1,0 +1,152 @@
+<div class="py-6 flex flex-col justify-center sm:py-12">
+  <div class="relative py-3 sm:max-w-4xl w-full sm:mx-auto">
+    <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
+      <div class="max-w-2xl mx-auto">
+        <div class="flex items-center space-x-5">
+          <div
+            class="h-14 w-14 bg-blue-200 rounded-full flex flex-shrink-0 justify-center items-center text-blue-500 text-2xl font-mono">
+            <i class="fa-solid fa-photo-film"></i>
+          </div>
+          <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
+            <h2 *ngIf="!newMultimedia" class="leading-relaxed">Editar Contenido</h2>
+            <h2 *ngIf="newMultimedia" class="leading-relaxed">Crear Contenido</h2>
+            <p class="text-sm text-red-400 font-normal leading-relaxed">
+              <i class="fa-solid fa-circle-exclamation mr-1"></i>
+              Hay campos requeridos
+            </p>
+          </div>
+        </div>
+        <div class="divide-y divide-gray-200">
+          <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+            <div class="flex flex-col">
+              <label class="">Escoge el tipo de multimedia:</label>
+              <span class="text-sm text-red-400 mb-4"> <i class="fa-solid fa-circle-exclamation mr-1"></i> No podrá ser
+                cambiado luego de crear el contenido!</span>
+
+              <ul class="flex w-full justify-between">
+                @for (multimediaType of multimediaTypes; track multimediaType) {
+                <li (click)="resetPreview()" >
+                  <input [formControl]="multimediaForm.controls.multimediaTypeId" type="radio" [id]="multimediaType.id"
+                    name="hosting" [value]="multimediaType.id" class="hidden peer" required [attr.disabled]="editable"/>
+                  <label [htmlFor]="multimediaType.id"
+                    class="flex flex-col items-center justify-center size-36 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100"
+                    [class]="editable == null ? '' : 'cursor-not-allowed'">
+                    <i [class]="multimediaType.iconClass" class="text-2xl"></i>
+                    <span class="text-sm mt-1">{{ multimediaType.verboseName }}</span>
+                  </label>
+                </li>
+                }
+              </ul>
+
+            </div>
+            <!-- Event Name -->
+            <div class="flex flex-col">
+              <label class="leading-loose"><span class="text-red-400 text-lg">*</span>Nombre del Contenido:</label>
+              <input type="text" [formControl]="multimediaForm.controls.name"
+                class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                placeholder="Event title">
+            </div>
+            <div [ngSwitch]="multimediaForm.value.multimediaTypeId">
+              <div *ngSwitchCase="1" class="flex flex-col">
+                <label class="leading-loose">Url del video:</label>
+                <p class="text-sm text-red-400 font-normal mb-2">
+                  <i class="fa-solid fa-circle-exclamation mr-1"></i>
+                  Debe tener el formato correcto: https://www.youtube.com/watch?v=videoId...
+                </p>
+                <input type="text" [formControl]="multimediaForm.controls.url"
+                  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                  placeholder="Optional">
+              </div>
+              <div *ngSwitchCase="2" class="flex flex-col">
+                <label class="leading-loose">Adjunta la imagen:</label>
+                <p class="text-sm text-red-400 font-normal mb-2">
+                  <i class="fa-solid fa-circle-exclamation mr-1"></i>
+                  Debe ser una IMÁGEN!
+                </p>
+                <input type="file" (change)="onFileChange($event, 'image')" accept="image/*" 
+                  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-200 rounded-md focus:outline-none text-gray-600">
+                <div *ngIf="imagePreview" class="mt-4 w-full h-40 flex justify-center">
+                  <img [src]="imagePreview" alt="Event Image Preview" class="w-full h-full object-contain rounded-lg shadow-md">
+                </div>
+                <span *ngIf="imagePreview" class="w-full text-center text-sm mt-1">Imágen Actual</span>
+              </div>
+              <div *ngSwitchCase="3" class="flex flex-col">
+                <label class="leading-loose">Adjunta tu archivo:</label>
+                <p class="text-sm text-red-400 font-normal mb-2">
+                  <i class="fa-solid fa-circle-exclamation mr-1"></i>
+                  Debe ser un archivo PLANO (PDF)!
+                </p>
+                <input type="file" (change)="onFileChange($event, 'file')" accept="application/pdf" 
+                  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-200 rounded-md focus:outline-none text-gray-600">
+                <div *ngIf="urlFile" class="mt-4 w-full py-2 rounded-md h-fit flex justify-center bg-slate-400/10">
+                  <a [href]="urlFile" target="_blank">
+                    <i class="fa-solid fa-file-pdf"></i> Ver Archivo Actual
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="z-10 bg-white rounded-lg shadow">
+              <label class="leading-loose">Escoge categorías para tu multimedia</label>
+                <p class="text-sm text-orange-400 font-normal mb-2">
+                  <i class="fa-solid fa-circle-exclamation mr-1"></i>
+                  Puedes escoger una, varias, o ninguna de las categorías. 
+                </p>
+              <div class="p-3">
+                <label for="input-group-search" class="sr-only">Buscar Categorías</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                  </svg>
+                  </div>
+                  <input type="text" [(ngModel)]="tagFilterQuery" (ngModelChange)="filterTags()" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Buscar Categoría">
+                </div>
+              </div>
+              <ul class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 ">
+                <li *ngFor="let tag of filteredTags">
+                  <div class="flex items-center p-2 rounded hover:bg-gray-100">
+                    <input (change)="onCheckboxChange($event)" [checked]="isCheckboxChecked(tag)" type="checkbox" [value]="tag.id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                    <label for="checkbox-item-11" class="w-full ms-2 text-sm font-medium text-gray-900 rounded ">{{tag.verboseName}}</label>
+                  </div>
+                </li>
+              </ul>
+          </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="pt-4 flex items-center space-x-4">
+            <button type="button" (click)="goBack()"
+              class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none">
+              <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path
+                  d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+              </svg> Volver a multimedia
+            </button>
+            <button type="button" *ngIf="!newMultimedia"
+              (click)="showConfirmationModal = true"
+              class="flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none bg-red-400 hover:bg-red-500">
+              <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg> Eliminar
+            </button>
+            <button type="button" (click)="submitForm()"
+              class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">
+              <i class="fa-solid fa-plus mr-2"></i>
+              Guardar cambios
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-confirmation-modal
+  *ngIf="showConfirmationModal"
+  [title]="'Borrar Multimedia'"
+  [description]="'Estás seguro que deseas eliminar este elemento multimedia? Esta acción no se puede deshacer.'"
+  [confirmText]="'Eliminar'"
+  [cancelText]="'No estoy seguro'"
+  (response)="handleModalResponse($event)"
+></app-confirmation-modal>

@@ -1,81 +1,156 @@
-import { Component, ViewChild, ElementRef, OnInit, AfterViewInit, Input, SimpleChange, SimpleChanges, EventEmitter, Output } from '@angular/core';
-import { ObservableInput } from 'rxjs';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Multimedia } from '../../types/multimedia';
+import { CommonModule } from '@angular/common';
+import { max, Observable } from 'rxjs';
 
 @Component({
   standalone: true,
   selector: 'app-video-player',
   templateUrl: './video-player.component.html',
-  styleUrls: ['./video-player.component.css']
+  styleUrls: ['./video-player.component.css'],
+  imports: [CommonModule]
 })
 export class VideoPlayerComponent implements OnInit {
 
-  @Input() videoId!: string;
+  @Input() multimedia!: Multimedia;
 
-  @Output() videoEnded = new EventEmitter();
-
-  ngOnChanges(changes: any) {
-    if (changes.videoId && this.player) {
-      this.player.destroy();
-      this.video = changes.videoId.currentValue;
-      this.startVideo();
-    }
-  }
+  @Output() mediaEnded = new EventEmitter();
+  @Input() showTitle: boolean = true;
+  @Input() progressBarId!: string;
+  @Input() playerOverrideEvents!: Observable<string>;
 
   /* 1. Some required variables which will be used by YT API*/
   public YT: any;
-  public video: any;
   public player: any;
   public reframed: Boolean = false;
   public videoPlaying: Boolean = false;
   public videoTitle: string = '';
+  private overrideSubscription: any;
+  private progressBarInterval: any;
 
   isRestricted = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+  
+
   ngOnInit() {
-    this.video = this.videoId;
-    setInterval(() => {
+    this.progressBarInterval = setInterval(() => {
       this.updateProgressBar();
-    }, 1000);
+    }, 500);
     this.init();
+    this.overrideSubscription = this.playerOverrideEvents?.subscribe((event) => {
+      switch (event) {
+        case 'play':
+          this.player.playVideo();
+          break;
+        case 'pause':
+          this.player.pauseVideo();
+          break;
+        case 'togglePlay':
+          this.togglePlay();
+          break;
+      }
+    });
   }
 
+  ngOnChanges(changes: any) {
+    if (changes.multimedia && this.showTitle) {
+      if (this.player) this.player.destroy();
+      // if there is an old div, remove it
+      const oldPlayerDiv = document.getElementById(`player-${changes.multimedia.previousValue?.id}`);
+      if (oldPlayerDiv) {
+        oldPlayerDiv.remove();
+      }
+      // create a new div with the id of the multimedia id
+      const playerDiv = document.createElement('div');
+      playerDiv.id = `player-${changes.multimedia.currentValue.id}`;
+      playerDiv.classList.value = "min-w-full w-auto h-auto aspect-video"
+      document.getElementById('videoholder')?.prepend(playerDiv);
+      this.startVideo();
+    }
+  }
 
+  ngOnDestroy() {
+    if (this.player) {
+      this.player.destroy();
+    }
+    this.overrideSubscription?.unsubscribe();
+    clearInterval(this.progressBarInterval);
+  }
+  
   /* 2. Initialize method for YT IFrame API */
   init() {
+    let existingTag = document.getElementById('iframe-api');
+    if (existingTag) {
+      this.startVideo();
+      return;
+    };
     var tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
+    tag.id = 'iframe-api';
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
 
     /* 3. startVideo() will create an <iframe> (and YouTube player) after the API code downloads. */
-    (window as any)['onYouTubeIframeAPIReady'] = () => this.startVideo();
+    (window as any)['onYouTubeIframeAPIReady'] = () => this.startVideo(); 
   }
   startVideo() {
-    this.reframed = false;
-    this.player = new (window as any)['YT'].Player('player', {
-      videoId: this.video,
-      playerVars: {
-        autoplay: 1,
-        modestbranding: 0,
-        controls: 0,
-        disablekb: 1,
-        rel: 0,
-        showinfo: 0,
-        fs: 0,
-        playsinline: 1,
-      },
-      events: {
-        'onStateChange': this.onPlayerStateChange.bind(this),
-        'onError': this.onPlayerError.bind(this),
-        'onReady': this.onPlayerReady.bind(this),
+    if (this.isYoutubeVideo(this.multimedia)) {
+      this.reframed = false;
+      const playerDiv = document.getElementById(`player-${this.multimedia.id}`);
+      // if player div is null, wait for it to be created
+      if (!playerDiv) {
+        setTimeout(() => {
+          this.startVideo();
+        }, 500);
+        console.log('player div not found, waiting', playerDiv);
+        return;
       }
-    });
+      this.player = new (window as any)['YT'].Player(`player-${this.multimedia.id}`, {
+        videoId: this.getVideoId(this.multimedia.url),
+        playerVars: {
+          autoplay: 1,
+          modestbranding: 0,
+          controls: 0,
+          disablekb: 1,
+          rel: 0,
+          showinfo: 0,
+          fs: 0,
+          playsinline: 1,
+        },
+        events: {
+          'onStateChange': this.onPlayerStateChange.bind(this),
+          'onError': this.onPlayerError.bind(this),
+          'onReady': this.onPlayerReady.bind(this),
+        }
+      });
+    } else {
+      this.videoTitle = this.multimedia.name;
+      this.player = {
+        maxTime: 10, // seconds
+        elapsedTime: 0,
+        getDuration: () => this.player.maxTime,
+        getCurrentTime: () => this.player.elapsedTime,
+        destroy: () => {},
+        playVideo: () => {
+          const interval = setInterval(() => {
+            
+            if (this.player.elapsedTime >= this.player.maxTime) {
+              clearInterval(interval);
+              this.mediaEnded.emit();
+            }
+            this.player.elapsedTime++;
+          }, 1000);
+        },
+      }
+      this.player.playVideo();
+    }
+    
   }
 
   /* 4. It will be called when the Video Player is ready */
   onPlayerReady(event: any) {
     this.videoTitle = event.target.getVideoData().title;
-    console.log('player ready', this.videoTitle);
+    console.log('player ready', this.player);
     this.player.playVideo();
     this.videoPlaying = true;
   }
@@ -99,7 +174,7 @@ export class VideoPlayerComponent implements OnInit {
         break;
       case (window as any)['YT'].PlayerState.ENDED:
         console.log('ended ');
-        this.videoEnded.emit();
+        this.mediaEnded.emit();
         break;
     }
   }
@@ -111,23 +186,27 @@ export class VideoPlayerComponent implements OnInit {
   onPlayerError(event: any) {
     switch (event.data) {
       case 2:
-        console.log('' + this.video)
+        console.log('' + this.multimedia)
         break;
-      case 100:
-        break;
-      case 101 || 150:
+      default:
+        console.log(event)
         break;
     }
   }
 
   updateProgressBar() {
     // Update the value of our progress bar
-    var progressBar = document.getElementById('progress-bar-fg');
+    var progressBar = document.getElementById(this.progressBarId);
+    const playerDiv = document.getElementById(`player-${this.multimedia.id}`);
+    if (!playerDiv) {
+      return;
+    }
     try {
       if (progressBar) {
-        progressBar.style.width = (this.player.getCurrentTime() / this.player.getDuration() * 100) + '%';
+        progressBar.style.width = (this.player.playerInfo.currentTime / this.player.playerInfo.duration * 100) + '%';
       }
     } catch (error) {
+      console.error('Error updating progress bar', this.player);
       return;
     }
   }
@@ -140,5 +219,13 @@ export class VideoPlayerComponent implements OnInit {
       this.player.playVideo();
       this.videoPlaying = true;
     }
+  }
+
+  isYoutubeVideo(multimedia: Multimedia): boolean {
+    return multimedia.multimediaType?.name === 'YOUTUBE_VIDEO';
+  }
+
+  getVideoId(url: string): string {
+    return url.split('v=')[1];
   }
 }
