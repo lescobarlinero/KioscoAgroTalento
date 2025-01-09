@@ -8,8 +8,8 @@ import { Multimedia } from '../../types/multimedia';
 })
 export class MultimediaService {
   
-  private apiUrlMM = 'http://localhost:3001/multimedias'; // Replace with your backend API URL
-  private apiUrlMMTypes = 'http://localhost:3001/multimedia-types'; // Replace with your backend API URL
+  private apiUrlMM = 'https://totem-ag-api-d5eqccdxebdaf3ek.eastus-01.azurewebsites.net/multimedias'; // Replace with your backend API URL
+  private apiUrlMMTypes = 'https://totem-ag-api-d5eqccdxebdaf3ek.eastus-01.azurewebsites.net/multimedia-types'; // Replace with your backend API URL
 
   constructor(private http:HttpClient) { }
 
