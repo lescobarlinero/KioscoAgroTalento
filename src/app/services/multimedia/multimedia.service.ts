@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Multimedia } from '../../types/multimedia';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MultimediaService {
   
-  private apiUrlMM = 'http://localhost:3001/multimedias'; // Replace with your backend API URL
-  private apiUrlMMTypes = 'http://localhost:3001/multimedia-types'; // Replace with your backend API URL
+  private apiUrlMM = `${environment.apiUrl}/multimedias`;
+  private apiUrlMMTypes = `${environment.apiUrl}/multimedia-types`;
 
   constructor(private http:HttpClient) { }
 

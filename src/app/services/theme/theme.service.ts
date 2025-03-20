@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Theme } from '../../types/theme';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
 
-  private apiUrl = 'http://localhost:3001/themes'; // Replace with your backend API URL
+  private apiUrl = `${environment.apiUrl}/themes`;
 
   constructor(private http: HttpClient) { }
 

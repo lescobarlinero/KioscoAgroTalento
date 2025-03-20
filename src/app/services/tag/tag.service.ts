@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Tag } from '../../types/tag';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class TagService {
   
   constructor(private http:HttpClient) { }
   
-  private apiUrlTags = 'http://localhost:3001/tags'; // Replace with your backend API URL
+  private apiUrlTags = `${environment}/tags`;
   
   getTags(): Observable<Tag[]> {
     return this.http.get<any>(`${this.apiUrlTags}`);
