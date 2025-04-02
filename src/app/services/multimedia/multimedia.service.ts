@@ -49,4 +49,8 @@ export class MultimediaService {
     }
     return this.http.put<Multimedia>(`${this.apiUrlMM}/${id}`, formData);
   }
+
+  deleteMultimedia(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrlMM}/${id}`);
+  }
 }

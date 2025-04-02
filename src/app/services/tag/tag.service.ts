@@ -10,9 +10,9 @@ import { environment } from '../../../environments/environment';
 export class TagService {
   
   constructor(private http:HttpClient) { }
-  
+
   private apiUrlTags = `${environment}/tags`;
-  
+
   getTags(): Observable<Tag[]> {
     return this.http.get<any>(`${this.apiUrlTags}`);
   }
