@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Tag } from '../../types/tag';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,9 @@ import { Tag } from '../../types/tag';
 export class TagService {
   
   constructor(private http:HttpClient) { }
-  
-  private apiUrlTags = 'https://totem-ag-api-d5eqccdxebdaf3ek.eastus-01.azurewebsites.net/tags'; // Replace with your backend API URL
-  
+
+  private apiUrlTags = `${environment}/tags`;
+
   getTags(): Observable<Tag[]> {
     return this.http.get<any>(`${this.apiUrlTags}`);
   }
